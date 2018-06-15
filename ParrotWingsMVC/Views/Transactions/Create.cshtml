@@ -1,0 +1,91 @@
+﻿@using Microsoft.AspNet.Identity
+@using ParrotWingsMVC.Models
+@using System.Web.Mvc;
+@using ParrotWingsMVC.Controllers;
+@using Vereyon.Web;
+@model ParrotWingsMVC.Transactions
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/scripts/jquery.validate.js")
+    @Scripts.Render("~/scripts/jquery.validate.unobtrusive.js")
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Transactions</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @*Commented fields will be generated automatically in the controller*@
+
+        @*   <div class="form-group">
+                @Html.LabelFor(model => model.DateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DateTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DateTime, "", new { @class = "text-danger" })
+                </div>
+            </div>  *@
+
+        @Html.Label("Your balance is " + ParrotWingsMVC.InformationProvider.GetCurrentUserBalance().ToString())
+        <div class="form-group">
+            @Html.LabelFor(model => model.CorrespondentName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*   @Html.DropDownListFor(model => model.CorrespondentName, (IEnumerable<SelectListItem>)ParrotWingsMVC.InformationProvider.GetCorrespondentNames())*@ @*ParrotWingsMVC.InformationProvider.GetCorrespondentNames() as SelectList, "111")*@
+                @Html.DropDownListFor(model => model.CorrespondentName, (IEnumerable<SelectListItem>)((TransactionsController)this.ViewContext.Controller).GetCorrespondentNames())
+                @*     @{
+                        ((TransactionsController)this.ViewContext.Controller).Method1();
+                    }  *@
+                @* (IEnumerable<SelectListItem>)ParrotWingsMVC.Controllers.TransactionsController.GetCorrespondentNames())  *@
+                @*    @Html.EditorFor(model => model.CorrespondentName, new { htmlAttributes = new { @class = "form-control" } }) *@
+                @Html.ValidationMessageFor(model => model.CorrespondentName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactionAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TransactionAmount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TransactionAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*  <div class="form-group">
+                @Html.LabelFor(model => model.ResultBalance, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ResultBalance, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ResultBalance, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                </div>
+            </div> *@
+
+        @*    @Html.ValueFor(model => model.UserId, HttpContext.Current.User.Identity.GetUserId()) *@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

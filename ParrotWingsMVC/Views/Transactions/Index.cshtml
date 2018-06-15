@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ParrotWingsMVC.Transactions>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+Only transactions created by you is shown here. Received transactions don't shown.
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CorrespondentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResultBalance)
+        </th>
+        @*      <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @* show the most recent transactions on top of the list *@
+    @foreach (var item in Model.Reverse())
+    {
+        <tr>
+            @* if correspondent name or sender id is equals with current user data, we'll show this transaction *@
+            @* now only sender's transactions is shown *@
+            @* if current user is a receiver *@
+            @*      @if (item.CorrespondentName.Equals(ParrotWingsMVC.InformationProvider.GetCurrentUserName()))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CorrespondentName)
+                    </td>
+                    <td>
+                        You received
+                        @Html.DisplayFor(modelItem => item.TransactionAmount)
+                    </td>
+                    <td>
+                        @* Now this program store and shows only sender's transaction balance, so here is no balance shown*@
+            @*@Html.DisplayFor(modelItem => item.ResultBalance)*@
+            @*     </td>
+                }*@
+
+            @* if current user is a sender *@
+            @if (item.UserId.Equals(ParrotWingsMVC.InformationProvider.GetCurrentUserId()))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CorrespondentName)
+                </td>
+                <td>
+                    You sended
+                    @Html.DisplayFor(modelItem => item.TransactionAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResultBalance)
+                </td>
+            }
+
+            @*
+                    <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.TransactionId }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.TransactionId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.TransactionId })
+                </td> *@
+
+        </tr>
+    }
+
+</table>
